@@ -8,15 +8,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+        
+        th {
+            text-align: center;
+            background-color: antiquewhite;
+            width: 70px;
+        }
+        
+        td {
+            text-align: center;
+            background-color: rgb(255, 252, 248);
+            height: 40px;
+        }
+    </style>
 </head>
 
-<body>
+<body onload="loadDoc()">
+    <script>
+        var xhttp = new XMLHttpRequest();
+        //set array of attempts
+        var array = []
+        array.length = 10
 
-Hello
+        var smallarray = []
+        smallarray.length = 2
 
+        var count = 1
+
+        function loadDoc() {
+            var header = []
+            for (var i = 0; i < array.length; i++) {
+                header.push(i + 1)
+            }
+            header.push("Current Score")
+            header.push("Max Score")
+                //create a table grid for the score
+            var grid = document.getElementById("gridview")
+            var tr = document.createElement('tr')
+            var div1 = document.createElement("div")
+            var tr2 = document.createElement('tr')
+            var tr3 = document.createElement('tr')
+            for (var i = 0; i < header.length; i++) {
+                var cell = document.createElement('th');
+                var cell2 = document.createElement('td');
+                cell2.setAttribute("id", "first" + (i + 1))
+                var cell3 = document.createElement('td');
+                cell3.setAttribute("id", "second" + (i + 1))
+                var cell4 = document.createElement('td');
+                cell4.setAttribute("id", "total" + (i + 1))
+                cell.setAttribute("id", `tr${i}`)
+                if (i < 10) {
+                    cell.setAttribute("colspan", "2")
+                    cell2.innerHTML = " "
+                    cell4.innerHTML = " "
+                    tr2.appendChild(cell2)
+                }
+                cell.innerHTML = header[i]
+                tr.appendChild(cell)
+                cell3.innerHTML = " "
+                cell4.setAttribute("colspan", "2")
+                tr2.appendChild(cell3)
+                tr3.appendChild(cell4)
+
+            }
+            grid.appendChild(tr)
+            grid.appendChild(tr2)
+            grid.appendChild(tr3)
+
+
+            // xhttp.onreadystatechange = function() {
+            //     if (this.readyState == 4 && this.status == 200) {
+
+            //     }
+            // };
+            // xhttp.open("GET", true);
+            // xhttp.send();
+        }
+
+        //get value from cookies
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        //disable  scrore
+        function getinfo(value) {
+
+            var score = document.getElementById("score").childNodes
+            var num = 10 - value
+            for (var i = 0; i < score.length; i++) {
+                if (num < score[i].id) {
+                    document.getElementById(`${score[i].id}`).setAttribute("style", "visibility: hidden")
+                }
+            }
+
+        }
+    </script>
+    <div id="menu" style="padding: 2%;">
+        <h1 class="mb-3">Bowing Scoring System</h1>
+        </br>
+        <p>Click Number of Pins Knocked Down</p>
+        <div id="score">
+            <input id="0" class="btn btn-primary" type="button" value="0" onclick="getinfo(this.value)">
+            <input id="1" class="btn btn-primary" type="submit" value="1" onclick="getinfo(this.value)">
+            <input id="2" class="btn btn-primary" type="reset" value="2" onclick="getinfo(this.value)">
+            <input id="3" class="btn btn-primary" type="button" value="3" onclick="getinfo(this.value)">
+            <input id="4" class="btn btn-primary" type="submit" value="4" onclick="getinfo(this.value)">
+            <input id="5" class="btn btn-primary" type="reset" value="5" onclick="getinfo(this.value)">
+            <input id="6" class="btn btn-primary" type="button" value="6" onclick="getinfo(this.value)">
+            <input id="7" class="btn btn-primary" type="submit" value="7" onclick="getinfo(this.value)">
+            <input id="8" class="btn btn-primary" type="reset" value="8" onclick="getinfo(this.value)">
+            <input id="9" class="btn btn-primary" type="button" value="9" onclick="getinfo(this.value)">
+            <input id="10" class="btn btn-primary" type="submit" value="10" onclick="getinfo(this.value)">
+        </div>
+        </br>
+        <hr>
+        </br>
+        <div class="container">
+            <table id="gridview">
+
+            </table>
+        </div>
+    </div>
 </body>
 
 </html>

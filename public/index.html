@@ -115,6 +115,13 @@
                             document.getElementById(`${score[i].id}`).removeAttribute("style")
                         }
                     }
+                    if (valueTen) {
+
+                        currentScore += (10 + parseInt(value))
+                        document.getElementById("total" + (round - 1)).innerHTML = currentScore
+                        document.getElementById("1").innerHTML = currentScore
+                        valueTen = ''
+                    }
                     document.getElementById("second" + round).innerHTML = "X"
                     countStrike++
                     strikeCalc(value)
@@ -243,6 +250,14 @@
                         document.getElementById("total" + (round - countStrike)).innerHTML = currentScore
                         tempScore -= 10
                     }
+                    if (valueTen) {
+
+                        currentScore += (10 + parseInt(value))
+                        document.getElementById("total" + (round - 1)).innerHTML = currentScore
+                        document.getElementById("1").innerHTML = currentScore
+                        valueTen = ''
+                    }
+
                     //if first value 10
                     if (num1 == 10) {
 

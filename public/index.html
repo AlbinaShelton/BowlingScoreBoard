@@ -125,7 +125,10 @@
                     }
                 }
 
-                if (round == 9) {
+                if (golast) {
+                    //go to extra score
+                    goextra(value)
+                } else if (round == 9) {
                     lastCalc(value)
                 } else if (value == 10) {
                     //check if strike
@@ -137,7 +140,7 @@
                         }
                     }
                     document.getElementById("second" + round).innerHTML = "X"
-
+                    countStrike++
                     strikeCalc(value)
 
                 } else {
@@ -151,6 +154,8 @@
                         if (countStrike == 2) {
                             currentScore = currentScore + parseInt(num1)
                             document.getElementById("total" + (round - countStrike)).innerHTML = currentScore
+                            tempScore -= 10
+
                         }
                         if (valueTen) {
                             currentScore += (10 + parseInt(num1))
@@ -166,6 +171,7 @@
                         //sum the strike srore
                         if (countStrike > 0) {
                             do {
+
                                 if (countStrike < 2) {
                                     currentScore += totalScore
                                     document.getElementById("total" + (round - countStrike)).innerHTML = currentScore
@@ -222,28 +228,32 @@
             //Strike calculation function
             function strikeCalc(val) {
                 roundCounter()
-                currentScore += parseInt(val) //conver str to int
-                if (countStrike > 0) {
-                    //mac temp score from strikes
-                    tempScore += parseInt(val)
-                    if (tempScore > 20) {
-                        tempScore = 20
-                    }
-                }
-                //if 3 strikes represent the value
-                if (countStrike == 2) {
-                    document.getElementById("total" + (round - (countStrike + 1))).innerHTML = currentScore
-                    document.getElementById("second11").innerHTML = currentScore
-                    currentScore += tempScore
-                }
 
                 //max is 3 strikes
-                if (countStrike == 2) {
-                    countStrike = 2
+                if (countStrike > 3) {
+                    countStrike = 3
                 } else {
-                    countStrike++
+
+                    currentScore += parseInt(val)
                 }
+
+                //mac temp score from strikes
+                tempScore += parseInt(val)
+                if (tempScore == 30) {
+                    tempScore = 20
+                }
+                //if 3 strikes represent the value
+                if (countStrike == 3) {
+
+                    document.getElementById("total" + (round - (countStrike))).innerHTML = currentScore
+                    document.getElementById("second11").innerHTML = currentScore
+                    currentScore += tempScore
+                    countStrike--
+
+                }
+
             }
+
 
             function lastCalc(value) {
                 var totalScore
@@ -252,10 +262,15 @@
 
                 if (count == 1) {
                     num1 = value
-                    if (golast) {
-                        goextra(value)
+                    if (countStrike == 2) {
+                        currentScore = currentScore + parseInt(num1)
+                        document.getElementById("total" + (round - countStrike)).innerHTML = currentScore
+                        tempScore -= 10
                     }
+                    //if first value 10
                     if (num1 == 10) {
+
+
                         document.getElementById("first" + round).innerHTML = "X"
                         for (var i = 0; i < score.length; i++) {
                             //reset score buttons
@@ -265,6 +280,7 @@
                         }
 
                     } else {
+
                         document.getElementById("first" + round).innerHTML = value
                         var num = 10 - value
                         for (var i = 0; i < score.length; i++) {
@@ -277,7 +293,29 @@
 
                 } else if (count == 2) {
                     num2 = value
+                    totalScore = (parseInt(num1) + parseInt(num2))
+                        //sum the strike srore
+                    if (countStrike > 0) {
+                        do {
+
+                            if (countStrike < 2) {
+                                currentScore += totalScore
+                                document.getElementById("total" + (round - countStrike)).innerHTML = currentScore
+                            } else {
+                                //new score
+                                currentScore = currentScore + tempScore
+
+                                document.getElementById("total" + (round - (countStrike - 1))).innerHTML = currentScore
+                                if (tempScore > 0) {
+                                    tempScore = 0
+                                }
+                            }
+                            countStrike -= 1
+                        } while (countStrike != 0)
+                    }
+
                     if (num2 == 10) {
+                        currentScore += totalScore
                         document.getElementById("second" + round).innerHTML = "X"
                         for (var i = 0; i < score.length; i++) {
                             //reset score buttons
@@ -285,12 +323,22 @@
                                 document.getElementById(`${score[i].id}`).removeAttribute("style")
                             }
                         }
-
+                        goextraRound()
                     } else {
-                        totalScore = (parseInt(num1) + parseInt(num2))
-                            //sum the strike srore
                         currentScore += totalScore
-                        if (totalScore == 10) {
+                        if (num1 == 10) {
+                            document.getElementById("second" + round).innerHTML = num2
+                            var num = 10 - value
+                            for (var i = 0; i < score.length; i++) {
+                                if (num < score[i].id) {
+                                    document.getElementById(`${score[i].id}`).setAttribute("style", "visibility: hidden")
+                                }
+                            }
+                            goextraRound()
+                        }
+                        //sum the strike srore
+                        else if (totalScore == 10) {
+
                             document.getElementById("second" + round).innerHTML = "/"
                                 //you can roll again
                             for (var i = 0; i < score.length; i++) {
@@ -301,7 +349,7 @@
                             }
                             goextraRound()
                         } else {
-                            document.getElementById("second" + round).innerHTML = currentScore
+                            document.getElementById("second" + round).innerHTML = num2
                             for (var i = 0; i < score.length; i++) {
                                 //reset score buttons
                                 if (score[i].onclick)
@@ -329,7 +377,30 @@
                     document.getElementById("tr" + (round - 1)).setAttribute("style", " background-color: antiquewhite;")
                     document.getElementById("tr" + round).setAttribute("style", " background-color: brown;")
                 }
+            }
 
+            function goextra(value) {
+                console.log(currentScore)
+                currentScore += parseInt(value)
+                if (value == 10) {
+                    document.getElementById("second10").innerHTML = "X"
+                } else {
+                    document.getElementById("second10").innerHTML = value
+                }
+                document.getElementById("second11").innerHTML = currentScore
+                var score = document.getElementById("score").childNodes
+                for (var i = 0; i < score.length; i++) {
+                    //reset score buttons
+                    if (score[i].onclick)
+                        document.getElementById(`${score[i].id}`).removeAttribute("onclick")
+                }
+                var btn = document.getElementById("lastMessage")
+                var message = document.createElement("h2")
+                message.innerHTML = "Good Job! You got " + currentScore + " point!"
+                btn.appendChild(message)
+                btn.removeAttribute("style")
+                document.getElementById("second11").innerHTML = currentScore
+                document.getElementById("total" + round).innerHTML = currentScore
             }
         </script>
 

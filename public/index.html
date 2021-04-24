@@ -21,7 +21,7 @@
         th {
             text-align: center;
             background-color: antiquewhite;
-            width: 70px;
+            width: 90px;
         }
         
         td {
@@ -29,127 +29,349 @@
             background-color: rgb(255, 252, 248);
             height: 40px;
         }
+        
+        #h2 {
+            color: brown;
+            font-weight: bold;
+        }
     </style>
 </head>
 
 <body onload="loadDoc()">
-    <script>
-        var xhttp = new XMLHttpRequest();
-        //set array of attempts
-        var array = []
-        array.length = 10
-
-        var smallarray = []
-        smallarray.length = 2
-
-        var count = 1
-
-        function loadDoc() {
+    <center>
+        <script>
+            var xhttp = new XMLHttpRequest();
+            //set array of attempts
+            var array = []
+            array.length = 10
             var header = []
-            for (var i = 0; i < array.length; i++) {
-                header.push(i + 1)
-            }
-            header.push("Current Score")
-            header.push("Max Score")
+            var smallarray = []
+            smallarray.length = 2
+            var num1, num2
+            var currentScore = 0
+            var count = 1
+            var round = 0
+            var countStrike = 0
+            var temp = 0
+            var tempScore = 0
+            var valueTen = ""
+            var golast = ''
+
+            function loadDoc() {
+                //frendly header message
+                document.getElementById("h2").innerHTML = `Round ${round+1}`
+
+                //header for grid
+                for (var i = 0; i < array.length; i++) {
+                    header.push(i + 1)
+                }
+                header.push("Extra")
+                header.push("Current Score")
+                header.push("Max Score")
+
                 //create a table grid for the score
-            var grid = document.getElementById("gridview")
-            var tr = document.createElement('tr')
-            var div1 = document.createElement("div")
-            var tr2 = document.createElement('tr')
-            var tr3 = document.createElement('tr')
-            for (var i = 0; i < header.length; i++) {
-                var cell = document.createElement('th');
-                var cell2 = document.createElement('td');
-                cell2.setAttribute("id", "first" + (i + 1))
-                var cell3 = document.createElement('td');
-                cell3.setAttribute("id", "second" + (i + 1))
-                var cell4 = document.createElement('td');
-                cell4.setAttribute("id", "total" + (i + 1))
-                cell.setAttribute("id", `tr${i}`)
-                if (i < 10) {
-                    cell.setAttribute("colspan", "2")
-                    cell2.innerHTML = " "
-                    cell4.innerHTML = " "
-                    tr2.appendChild(cell2)
+                var grid = document.getElementById("gridview")
+                var tr = document.createElement('tr')
+                var div1 = document.createElement("div")
+                var tr2 = document.createElement('tr')
+                var tr3 = document.createElement('tr')
+
+                for (var i = 0; i < header.length; i++) {
+                    var cell = document.createElement('th');
+                    var cell2 = document.createElement('td');
+                    cell2.setAttribute("id", "first" + (i))
+                    var cell3 = document.createElement('td');
+                    cell3.setAttribute("id", "second" + (i))
+                    var cell4 = document.createElement('td');
+                    cell4.setAttribute("id", "total" + (i))
+                    cell.setAttribute("id", `tr${i}`)
+                    if (i < 10) {
+                        cell.setAttribute("colspan", "2")
+                        cell2.innerHTML = " "
+                        cell4.innerHTML = " "
+                        tr2.appendChild(cell2)
+                    }
+
+
+                    cell.innerHTML = header[i]
+                    tr.appendChild(cell)
+                    cell3.innerHTML = " "
+                    cell4.setAttribute("colspan", "2")
+                    tr2.appendChild(cell3)
+                    tr3.appendChild(cell4)
+
                 }
-                cell.innerHTML = header[i]
-                tr.appendChild(cell)
-                cell3.innerHTML = " "
-                cell4.setAttribute("colspan", "2")
-                tr2.appendChild(cell3)
-                tr3.appendChild(cell4)
+                grid.appendChild(tr)
+                grid.appendChild(tr2)
+                grid.appendChild(tr3)
 
-            }
-            grid.appendChild(tr)
-            grid.appendChild(tr2)
-            grid.appendChild(tr3)
+                //set default color for first round
+                document.getElementById("tr0").setAttribute("style", " background-color: brown;")
 
-
-            // xhttp.onreadystatechange = function() {
-            //     if (this.readyState == 4 && this.status == 200) {
-
-            //     }
-            // };
-            // xhttp.open("GET", true);
-            // xhttp.send();
-        }
-
-        //get value from cookies
-        function getCookie(cname) {
-            var name = cname + "=";
-            var decodedCookie = decodeURIComponent(document.cookie);
-            var ca = decodedCookie.split(';');
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return "";
-        }
-
-        //disable  scrore
-        function getinfo(value) {
-
-            var score = document.getElementById("score").childNodes
-            var num = 10 - value
-            for (var i = 0; i < score.length; i++) {
-                if (num < score[i].id) {
-                    document.getElementById(`${score[i].id}`).setAttribute("style", "visibility: hidden")
-                }
+                //set total score
+                document.getElementById("second12").innerHTML = 300
             }
 
-        }
-    </script>
-    <div id="menu" style="padding: 2%;">
-        <h1 class="mb-3">Bowing Scoring System</h1>
-        </br>
-        <p>Click Number of Pins Knocked Down</p>
-        <div id="score">
-            <input id="0" class="btn btn-primary" type="button" value="0" onclick="getinfo(this.value)">
-            <input id="1" class="btn btn-primary" type="submit" value="1" onclick="getinfo(this.value)">
-            <input id="2" class="btn btn-primary" type="reset" value="2" onclick="getinfo(this.value)">
-            <input id="3" class="btn btn-primary" type="button" value="3" onclick="getinfo(this.value)">
-            <input id="4" class="btn btn-primary" type="submit" value="4" onclick="getinfo(this.value)">
-            <input id="5" class="btn btn-primary" type="reset" value="5" onclick="getinfo(this.value)">
-            <input id="6" class="btn btn-primary" type="button" value="6" onclick="getinfo(this.value)">
-            <input id="7" class="btn btn-primary" type="submit" value="7" onclick="getinfo(this.value)">
-            <input id="8" class="btn btn-primary" type="reset" value="8" onclick="getinfo(this.value)">
-            <input id="9" class="btn btn-primary" type="button" value="9" onclick="getinfo(this.value)">
-            <input id="10" class="btn btn-primary" type="submit" value="10" onclick="getinfo(this.value)">
+
+
+            //disable  scrore
+            function getinfo(value) {
+                var totalScore
+                var score = document.getElementById("score").childNodes
+                var num = 10 - value
+                for (var i = 0; i < score.length; i++) {
+                    if (num < score[i].id) {
+                        document.getElementById(`${score[i].id}`).setAttribute("style", "visibility: hidden")
+                    }
+                }
+
+                if (round == 9) {
+                    lastCalc(value)
+                } else if (value == 10) {
+                    //check if strike
+                    //go to score function
+                    for (var i = 0; i < score.length; i++) {
+                        //reset score buttons
+                        if (score[i].style) {
+                            document.getElementById(`${score[i].id}`).removeAttribute("style")
+                        }
+                    }
+                    document.getElementById("second" + round).innerHTML = "X"
+
+                    strikeCalc(value)
+
+                } else {
+
+                    //filling number 1 and 2
+                    if (count == 1) {
+                        num1 = value
+                        document.getElementById("first" + round).innerHTML = value
+                        count++
+                        //if there was 2 times strike 
+                        if (countStrike == 2) {
+                            currentScore = currentScore + parseInt(num1)
+                            document.getElementById("total" + (round - countStrike)).innerHTML = currentScore
+                        }
+                        if (valueTen) {
+                            currentScore += (10 + parseInt(num1))
+                            document.getElementById("total" + (round - 1)).innerHTML = currentScore
+                            document.getElementById("1").innerHTML = currentScore
+                            valueTen = ''
+                        }
+                    } else if (count == 2) {
+
+                        num2 = value
+                        totalScore = (parseInt(num1) + parseInt(num2))
+
+                        //sum the strike srore
+                        if (countStrike > 0) {
+                            do {
+                                if (countStrike < 2) {
+                                    currentScore += totalScore
+                                    document.getElementById("total" + (round - countStrike)).innerHTML = currentScore
+                                } else {
+                                    //new score
+                                    currentScore = currentScore + tempScore
+
+                                    document.getElementById("total" + (round - (countStrike - 1))).innerHTML = currentScore
+                                    if (tempScore > 0) {
+                                        tempScore = 0
+                                    }
+                                }
+                                countStrike -= 1
+                            } while (countStrike != 0)
+                        }
+
+                        if (totalScore == 10) {
+                            document.getElementById("second" + round).innerHTML = "/"
+                            valueTen = "+"
+
+                        } else {
+                            currentScore += totalScore
+                            document.getElementById("second" + round).innerHTML = value
+                            document.getElementById("second11").innerHTML = currentScore
+                            document.getElementById("total" + round).innerHTML = currentScore
+                        }
+                        count = 1
+                        for (var i = 0; i < score.length; i++) {
+                            //reset score buttons
+                            if (score[i].style) {
+                                document.getElementById(`${score[i].id}`).removeAttribute("style")
+                            }
+                        }
+                        roundCounter()
+                    }
+                }
+            }
+
+            //Helper function for Round counter 
+            function roundCounter() {
+
+                round++ //count round
+                //frendly header message
+                document.getElementById("h2").innerHTML = `Round ${round+1}`
+
+                //set nice view of active round header
+                for (var i = 0; i < header.length; i++) {
+                    document.getElementById("tr" + (round - 1)).setAttribute("style", " background-color: antiquewhite;")
+                    document.getElementById("tr" + round).setAttribute("style", " background-color: brown;")
+                }
+
+            }
+
+            //Strike calculation function
+            function strikeCalc(val) {
+                roundCounter()
+                currentScore += parseInt(val) //conver str to int
+                if (countStrike > 0) {
+                    //mac temp score from strikes
+                    tempScore += parseInt(val)
+                    if (tempScore > 20) {
+                        tempScore = 20
+                    }
+                }
+                //if 3 strikes represent the value
+                if (countStrike == 2) {
+                    document.getElementById("total" + (round - (countStrike + 1))).innerHTML = currentScore
+                    document.getElementById("second11").innerHTML = currentScore
+                    currentScore += tempScore
+                }
+
+                //max is 3 strikes
+                if (countStrike == 2) {
+                    countStrike = 2
+                } else {
+                    countStrike++
+                }
+            }
+
+            function lastCalc(value) {
+                var totalScore
+                var score = document.getElementById("score").childNodes
+                var btn = document.getElementById("lastMessage")
+
+                if (count == 1) {
+                    num1 = value
+                    if (golast) {
+                        goextra(value)
+                    }
+                    if (num1 == 10) {
+                        document.getElementById("first" + round).innerHTML = "X"
+                        for (var i = 0; i < score.length; i++) {
+                            //reset score buttons
+                            if (score[i].style) {
+                                document.getElementById(`${score[i].id}`).removeAttribute("style")
+                            }
+                        }
+
+                    } else {
+                        document.getElementById("first" + round).innerHTML = value
+                        var num = 10 - value
+                        for (var i = 0; i < score.length; i++) {
+                            if (num < score[i].id) {
+                                document.getElementById(`${score[i].id}`).setAttribute("style", "visibility: hidden")
+                            }
+                        }
+                    }
+                    count++
+
+                } else if (count == 2) {
+                    num2 = value
+                    if (num2 == 10) {
+                        document.getElementById("second" + round).innerHTML = "X"
+                        for (var i = 0; i < score.length; i++) {
+                            //reset score buttons
+                            if (score[i].style) {
+                                document.getElementById(`${score[i].id}`).removeAttribute("style")
+                            }
+                        }
+
+                    } else {
+                        totalScore = (parseInt(num1) + parseInt(num2))
+                            //sum the strike srore
+                        currentScore += totalScore
+                        if (totalScore == 10) {
+                            document.getElementById("second" + round).innerHTML = "/"
+                                //you can roll again
+                            for (var i = 0; i < score.length; i++) {
+                                //reset score buttons
+                                if (score[i].style) {
+                                    document.getElementById(`${score[i].id}`).removeAttribute("style")
+                                }
+                            }
+                            goextraRound()
+                        } else {
+                            document.getElementById("second" + round).innerHTML = currentScore
+                            for (var i = 0; i < score.length; i++) {
+                                //reset score buttons
+                                if (score[i].onclick)
+                                    document.getElementById(`${score[i].id}`).removeAttribute("onclick")
+                            }
+                            //GO OUT
+                            var message = document.createElement("h2")
+                            message.innerHTML = "Good Job! You got " + currentScore + " point!"
+                            btn.appendChild(message)
+                            btn.removeAttribute("style")
+                            document.getElementById("second11").innerHTML = currentScore
+                            document.getElementById("total" + round).innerHTML = currentScore
+                        }
+                    }
+
+
+                }
+            }
+
+            function goextraRound() {
+                round++ //count round
+                golast = "getextrapoints"
+                    //set nice view of active round header
+                for (var i = 0; i < header.length - 2; i++) {
+                    document.getElementById("tr" + (round - 1)).setAttribute("style", " background-color: antiquewhite;")
+                    document.getElementById("tr" + round).setAttribute("style", " background-color: brown;")
+                }
+
+            }
+        </script>
+
+
+        <div id="menu" style="padding: 2%;">
+            <h1 class="mb-3">Bowing Scoring System</h1>
+            <h1 class="mb-3">Albina Shelton</h1>
+            </br>
+            <h2 id="h2"></h2>
+            </br>
+            <p>Click Number of Pins Knocked Down</p>
+            <div id="score">
+                <input id="0" class="btn btn-primary" type="button" value="0" onclick="getinfo(this.value)">
+                <input id="1" class="btn btn-primary" type="submit" value="1" onclick="getinfo(this.value)">
+                <input id="2" class="btn btn-primary" type="reset" value="2" onclick="getinfo(this.value)">
+                <input id="3" class="btn btn-primary" type="button" value="3" onclick="getinfo(this.value)">
+                <input id="4" class="btn btn-primary" type="submit" value="4" onclick="getinfo(this.value)">
+                <input id="5" class="btn btn-primary" type="reset" value="5" onclick="getinfo(this.value)">
+                <input id="6" class="btn btn-primary" type="button" value="6" onclick="getinfo(this.value)">
+                <input id="7" class="btn btn-primary" type="submit" value="7" onclick="getinfo(this.value)">
+                <input id="8" class="btn btn-primary" type="reset" value="8" onclick="getinfo(this.value)">
+                <input id="9" class="btn btn-primary" type="button" value="9" onclick="getinfo(this.value)">
+                <input id="10" class="btn btn-primary" type="submit" value="10" onclick="getinfo(this.value)">
+            </div>
+            </br>
+            <hr>
+            </br>
+            <div class="container">
+                <table id="gridview">
+                </table>
+            </div>
+            </br>
+            <div>
+                <input id="final" class="btn btn-primary" type="button" value="START NEW GAME" onclick="window.location.reload()">
+            </div>
+            </br>
+            <div id="lastMessage" style="visibility: hidden;">
+                <input id="final" class="btn btn-primary" type="button" value="PLAY AGAIN" onclick="window.location.reload()">
+            </div>
+
         </div>
-        </br>
-        <hr>
-        </br>
-        <div class="container">
-            <table id="gridview">
-
-            </table>
-        </div>
-    </div>
+    </center>
 </body>
 
 </html>

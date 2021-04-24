@@ -3,14 +3,8 @@
 const express = require('express')
 const app = express()
 var path = require('path');
-var bodyParser = require('body-parser');
 const port = 3000
-var fs = require('fs');
 const router = express.Router();
-const cookieParser = require('cookie-parser');
-app.use(cookieParser());
-var array = []
-array.length = 10
 
 app.use(express.static(path.join(__dirname, 'public')));
 /**
@@ -31,15 +25,9 @@ router.get('/', function(req, res) {
 
 });
 
-app.get('/info', (req, res) => {
-        console.log(req.body)
-        var data = req.body
 
-        res.send(data)
-
-    })
-    //add the router
+//add the router
 app.use('/', router);
-app.listen(process.env.port || 3000);
+app.listen(process.env.port || port);
 
 console.log('Running at Port 3000');

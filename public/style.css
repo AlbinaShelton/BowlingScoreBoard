@@ -1,0 +1,27 @@
+body {
+    background: url('image.png')no-repeat center fixed;
+    background-size: cover;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+}
+
+th {
+    text-align: center;
+    background-color: antiquewhite;
+    width: 90px;
+}
+
+td {
+    text-align: center;
+    background-color: rgb(255, 252, 248);
+    height: 40px;
+}
+
+#h2 {
+    color: brown;
+    font-weight: bold;
+}
